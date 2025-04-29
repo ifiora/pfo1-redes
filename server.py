@@ -11,6 +11,7 @@ def configurar_servidor(direccion='localhost', puerto=5000):
     """
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    # Asociamos el servidor a la IP local y el puerto correspondientes.
     srv.bind((direccion, puerto))
     srv.listen(5)
     print(f"Servidor corriendo en {direccion}:{puerto}")
@@ -23,6 +24,7 @@ def guardar_en_db(texto, ip_cliente):
     """
     with sqlite3.connect(ARCHIVO_DB) as conexion:
         cursor = conexion.cursor()
+        # Ejecuta la consulta para crear la tabla que va a almacenar los mensajes
         cursor.execute(
             '''
             CREATE TABLE IF NOT EXISTS mensajes (
@@ -33,7 +35,9 @@ def guardar_en_db(texto, ip_cliente):
             )
             '''
         )
+        # Genera el timestamp
         fecha = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        # Inserta el mensaje en la tabla
         cursor.execute(
             'INSERT INTO mensajes (texto, fecha_envio, ip_cliente) VALUES (?, ?, ?)',
             (texto, fecha, ip_cliente)
@@ -59,6 +63,7 @@ def atender_conexiones(servidor):
 
                 ts = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                 respuesta = f"Mensaje recibido: {ts}"
+                # Envia el mensaje a travez del socket
                 cliente_sock.sendall(respuesta.encode('utf-8'))
 
         except Exception as ex:

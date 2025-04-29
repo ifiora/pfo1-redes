@@ -1,6 +1,6 @@
 import socket
 
-
+# Inicia el cliente
 def iniciar_cliente(host='localhost', puerto=5000):
     """
     Conecta al servidor, envía mensajes hasta que el usuario teclee 'exito'
@@ -8,6 +8,7 @@ def iniciar_cliente(host='localhost', puerto=5000):
     """
     cliente = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
+        # Se conecta al servidor usando el puerto e IP correspondiente
         cliente.connect((host, puerto))
         print(f"Conectado a {host}:{puerto}")
 
@@ -17,6 +18,7 @@ def iniciar_cliente(host='localhost', puerto=5000):
                 print("Terminando cliente...")
                 break
 
+            
             cliente.sendall(texto.encode('utf-8'))
             datos = cliente.recv(2048)
             print(f"Respuesta del servidor: {datos.decode('utf-8')}")
