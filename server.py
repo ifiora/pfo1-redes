@@ -4,6 +4,7 @@ from datetime import datetime
 
 ARCHIVO_DB = 'chat.db'
 
+
 def configurar_servidor(direccion='localhost', puerto=5000):
     """
     Inicializa el socket en TCP/IP y comienza a escuchar conexiones.
